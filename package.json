@@ -1,0 +1,17 @@
+{
+  "name": "tile_editor",
+  "version": "1.0.0",
+  "description": "A tile editor for developing 2D tile maps.",
+  "main": "app.js",
+  "author": "Michael Kelly",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.2.0"
+  },
+  "engines": {
+      "node": "10.15.0"
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
+}

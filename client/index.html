@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Tile Editor</title>
+
+	<!--- Style --->
+	<link rel="stylesheet" type="text/css" href="/client/style.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+
+	<!--- Scripts --->
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js'></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.slim.js"></script>
+	
+	<!--- Game Code --->
+	<script type="text/javascript" src="/client/js/game_keyboard.js"></script>
+	<script type="text/javascript" src="/client/js/game_entities.js"></script>
+	<script type="text/javascript" src="/client/js/tile.js"></script>
+	<script type="text/javascript" src="/client/js/tile_container.js"></script>
+	<script type="text/javascript" src="/client/js/game_mapb.js"></script>
+	<script type="text/javascript" src="/client/js/game_core.js"></script>
+	<script type="text/javascript" src="/client/js/game_ui.js"></script>
+	<script type="text/javascript" src="/client/js/game_client.js"></script>
+</head>
+
+<body oncontextmenu="return false;">
+	<div id='editor_sidebar_left' class='sidebar sb_left'>
+
+		<div>
+			<button id='btn_lock_left' class="btn btn-secondary active" type="button" 
+				data-toggle="popover" data-placement="bottom" data-content="Lock Sidebar"><i class="fas fa-lock"></i></button>
+			<button id='btn_alpha_left' class="btn btn-secondary" type="button" 
+				data-toggle="popover" data-placement="bottom" data-content="Fade Sidebar"><i class="fas fa-circle"></i></button>
+		</div>
+
+		<div id='section_2' class='sectional'>
+
+			<ul id='section_2_tabs' class="nav nav-tabs" role="tablist">
+				<li class="nav-item">
+					<div class="nav-link active" id="navigation_tab" data-toggle="tab" href="#navigation_content" role="tab" aria-controls="home" aria-selected="true">Nav</div>
+				</li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade show active"  role="tabpanel" aria-labelledby="tools-tab">
+					<div id="navigation_content" class='sectional-content'>
+						Tile : 0 0, Pixel : 0 0
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<div id='section_0'>
+			<ul id='section_0_tabs' class="nav nav-tabs connectedSortable" id="myTab" role="tablist">
+				<li class="nav-item">
+					<div class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Tools</div>
+				</li>
+			</ul>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="tools-tab">
+
+					<div class='sectional-content'>
+
+						<!-- Selectors -->
+						<div class="btn-group btn-group-toggle" data-toggle="buttons">
+							<label id="btn_select_std" class="btn btn-secondary active" data-toggle="popover" data-placement="bottom" data-content="Standard Select">
+								<input type="radio" name="options" autocomplete="off" checked>
+								<i class="fas fa-expand"></i>
+							</label>
+							<label id="btn_select_lasso" class="btn btn-secondary" data-toggle="popover" data-placement="bottom" data-content="Lasso Select">
+								<input type="radio" name="options" autocomplete="off">
+								<i class="fas fa-splotch"></i>
+							</label>
+						</div>
+	
+						<!-- Selector Options -->
+						<button id='btn_select_empty' type="button" class="btn btn-secondary" data-toggle="popover" data-placement="bottom" data-content="Empty Select">
+							<i class="fas fa-object-ungroup"></i>
+						</button>
+	
+						<!-- Undo Redo -->
+						<div class="btn-group" role="group" aria-label="Basic example">
+							<button id='btn_undo' type="button" class="btn btn-secondary" data-toggle="popover" data-placement="bottom" data-content="Undo">
+								<i class="fas fa-undo"></i>
+							</button>
+							<button id='btn_redo' type="button" class="btn btn-secondary" data-toggle="popover" data-placement="bottom" data-content="Redo">
+								<i class="fas fa-redo"></i>
+							</button>
+						</div>
+	
+						<!-- Copy Cut Paste delete -->
+						<div class="btn-group" role="group" aria-label="Basic example">
+							<button id='btn_copy'type="button" class="btn btn-secondary" data-toggle="popover" data-placement="bottom" data-content="Copy">
+								<i class="fas fa-copy"></i>
+							</button>
+							<button id='btn_paste'type="button" class="btn btn-secondary" data-toggle="popover" data-placement="bottom" data-content="Paste">
+								<i class="fas fa-paste"></i>
+							</button>
+							<button id='btn_cut' type="button" class="btn btn-secondary" data-toggle="popover" data-placement="bottom" data-content="Cut">
+								<i class="fas fa-cut"></i>
+							</button>
+							<button id='btn_delete' type="button" class="btn btn-secondary" data-toggle="popover" data-placement="bottom" data-content="Delete">
+								<i class="fas fa-trash"></i>
+							</button>
+						</div>
+
+					</div>
+					
+
+				</div>
+			</div>
+		</div>
+
+		<div id='section_1' class='sectional'>
+			<ul id="section_1_tabs" class="nav nav-tabs connectedSortable"  role="tablist">
+				<li class="nav-item">
+					<div class="nav-link active" id="profile-tab" data-toggle="tab" href="#c4" role="tab" aria-controls="profile" aria-selected="false">Tiles</div>
+				</li>
+			</ul>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active" id="c4" role="tabpanel" aria-labelledby="profile-tab">
+
+					<div class='sectional-content'>
+
+						<div>
+							<button id='btn_tileset_0' type="button" class="btn btn-secondary btn-tileset"></button>
+							<button id='btn_tileset_1' type="button" class="btn btn-secondary btn-tileset"></button>
+							<button id='btn_tileset_2' type="button" class="btn btn-secondary btn-tileset"></button>
+							<button id='btn_tileset_3' type="button" class="btn btn-secondary btn-tileset"></button>
+							<button id='btn_tileset_4' type="button" class="btn btn-secondary btn-tileset"></button>
+						</div>
+						<div>
+							<input id="rng_brush_size" class="form-control-range" type="range" min='1' max='5' step='1' value='1'>
+						</div>
+						<div class='overflow-visible'>
+							<!-- Brush: Square, Smart -->
+							<div class='d-block'>
+								<button type="button" class="btn btn-secondary btn-tileset">
+									<div id='btn_brush_square' class='btn btn-bg btn-brush'></div>
+								</button>
+								<button  type="button" class="btn btn-secondary btn-tileset ">
+									<div id='btn_brush_smart' class='btn btn-bg btn-brush'></div>
+								</button>
+							</div>
+							<!-- Brush: Tri -->
+							<div class='btn_container_quad'>
+								<button type="button" class="btn btn-secondary btn-tileset">
+									<div id='btn_brush_tri_1' class='btn btn-bg btn-brush'></div>
+								</button>
+								<button  type="button" class="btn btn-secondary btn-tileset">
+									<div id='btn_brush_tri_2' class='btn btn-bg btn-brush'></div>
+								</button>
+								<button  type="button" class="btn btn-secondary btn-tileset">
+									<div id='btn_brush_tri_3' class='btn btn-bg btn-brush'></div>
+								</button>
+								<button  type="button" class="btn btn-secondary btn-tileset">
+									<div id='btn_brush_tri_4' class='btn btn-bg btn-brush'></div>
+								</button>
+							</div>
+							<!-- Brush: H Tri -->
+							<div class='btn_container_quad'>
+								<button type="button" class="btn btn-secondary btn-tileset">
+									<div id='btn_brush_htri_1' class='btn btn-bg btn-brush'></div>
+								</button>
+								<button  type="button" class="btn btn-secondary btn-tileset">
+									<div id='btn_brush_htri_2' class='btn btn-bg btn-brush'></div>
+								</button>
+								<button  type="button" class="btn btn-secondary btn-tileset">
+									<div id='btn_brush_htri_3' class='btn btn-bg btn-brush'></div>
+								</button>
+								<button  type="button" class="btn btn-secondary btn-tileset">
+									<div id='btn_brush_htri_4' class='btn btn-bg btn-brush'></div>
+								</button>
+							</div>
+							<!-- Brush: V Tri -->
+							<div class='btn_container_quad'>
+								<button type="button" class="btn btn-secondary btn-tileset">
+									<div id='btn_brush_vtri_1' class='btn btn-bg btn-brush'></div>
+								</button>
+								<button  type="button" class="btn btn-secondary btn-tileset">
+									<div id='btn_brush_vtri_2' class='btn btn-bg btn-brush'></div>
+								</button>
+								<button  type="button" class="btn btn-secondary btn-tileset">
+									<div id='btn_brush_vtri_3' class='btn btn-bg btn-brush'></div>
+								</button>
+								<button  type="button" class="btn btn-secondary btn-tileset">
+									<div id='btn_brush_vtri_4' class='btn btn-bg btn-brush'></div>
+								</button>
+							</div>
+						</div>
+
+					</div>
+					
+
+
+				</div>
+			</div>
+		</div>
+		
+
+	</div>
+
+	<div id='editor_sidebar_right' class='sidebar sb_right'>
+		<div>
+			<button id='btn_lock_right' class="btn btn-secondary active" type="button"
+				data-toggle="popover" data-placement="bottom" data-content="Lock Sidebar"><i class="fas fa-lock"></i></button>
+			<button id='btn_alpha_right' class="btn btn-secondary" type="button"
+				data-toggle="popover" data-placement="bottom" data-content="Fade Sidebar"><i class="fas fa-circle"></i></button>
+		</div>
+
+		<div id='section_3' class='sectional'>
+			
+			<ul id='section_3_tabs' class="nav nav-tabs" role="tablist">
+				<li class="nav-item">
+					<div class="nav-link active" id="layers_tab" data-toggle="tab" href="#layers_content" role="tab" aria-controls="home" aria-selected="true">Properties</div>
+				</li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade show active" id="layers_content" role="tabpanel" aria-labelledby="tools-tab">
+
+					<form class='sectional-content'>
+						<div class="form-group row">
+							<label for="inp_layer_name" class="col-sm-5 col-form-label">Name :</label>
+							<div class="col-sm-7 inp-container">
+								<input id="inp_layer_name" class="form-control" placeholder="Layer Name">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inp_layer_scale" class="col-sm-5 col-form-label">Scale :</label>
+							<div class="col-sm-7 inp-container">
+								<input id="inp_layer_scale" class="form-control" placeholder="1">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inp_layer_offset_x" class="col-sm-5 col-form-label">Offset X :</label>
+							<div class="col-sm-7 inp-container">
+								<input id="inp_layer_offset_x" class="form-control" placeholder="0">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inp_layer_offset_y" class="col-sm-5 col-form-label">Offset Y :</label>
+							<div class="col-sm-7 inp-container">
+								<input id="inp_layer_offset_y" class="form-control" placeholder="0">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inp_layer_parallax_x" class="col-sm-5 col-form-label">Parallax X :</label>
+							<div class="col-sm-7 inp-container">
+								<input id="inp_layer_parallax_x" class="form-control" placeholder="1">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inp_layer_parallax_y" class="col-sm-5 col-form-label">Parallax Y :</label>
+							<div class="col-sm-7 inp-container">
+								<input id="inp_layer_parallax_y" class="form-control" placeholder="1">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="inp_layer_tint" class="col-sm-5 col-form-label">Tint :</label>
+							<div class="col-sm-7 inp-container">
+								<input id="inp_layer_tint" class="form-control" type="color" value='#FFFFFF'>
+							</div>
+						</div>
+					</form>
+					
+				</div>
+			</div>
+
+		</div>
+		<div id='section_4' class='sectional'>
+
+			<ul id='section_4_tabs' class="nav nav-tabs" role="tablist">
+				<li class="nav-item">
+					<div class="nav-link active" id="layers_tab" data-toggle="tab" href="#layers_content" role="tab" aria-controls="home" aria-selected="true">Layers</div>
+				</li>
+			</ul>
+			<div id="myTabContent" class="tab-content">
+				<div class="tab-pane fade show active" id="layers_content" role="tabpanel" aria-labelledby="tools-tab">
+
+					<div class='sectional-content'>
+
+						<div>
+							<button id='btn_layer_add' type="button" class="btn btn-secondary">
+								Add Layer
+							</button>
+							<button id='btn_layer_delete' type="button" class="btn btn-secondary d-none">
+								Delete Layer
+							</button>
+							<button id='btn_layer_visible' type="button" class="btn btn-secondary" 
+								data-toggle="popover" data-placement="bottom" data-content="Layer Visibility">
+								<i class="far fa-eye"></i>
+							</button>
+							<button id='btn_layer_alpha' type="button" class="btn btn-secondary"
+								data-toggle="popover" data-placement="bottom" data-content="Layer Alpha">
+								<i class="fas fa-adjust"></i>
+							</button>
+						</div>
+	
+						<ul id='ul_layers' class='list-group list-group-flush shadow'>
+	
+						</ul>
+
+					</div>
+					
+	
+				</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>
+
