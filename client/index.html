@@ -2,7 +2,13 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Tile Editor</title>
+    <meta name="author" content="Michael Kelly" />
+	<meta name="image" property="og:image" content="https://cdn.discordapp.com/attachments/876371273767329832/876371394869493760/meta.png" />
+	<meta name="title" property="og:title" content="Tiledit" />
+	<meta name="description" content="Tiledit App" />
+	<meta property="og:type" content="Website" />
+	<meta name="description" property="og:description" content="Tiledit App" />
+	<title>Tiledit</title>
 
 	<!--- Style --->
 	<link rel="stylesheet" type="text/css" href="/client/style.css">
@@ -17,7 +23,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.slim.js"></script>
-	
+
 	<!--- Game Code --->
 	<script type="text/javascript" src="/client/js/game_keyboard.js"></script>
 	<script type="text/javascript" src="/client/js/game_entities.js"></script>
@@ -33,9 +39,9 @@
 	<div id='editor_sidebar_left' class='sidebar sb_left'>
 
 		<div>
-			<button id='btn_lock_left' class="btn btn-secondary active" type="button" 
+			<button id='btn_lock_left' class="btn btn-secondary active" type="button"
 				data-toggle="popover" data-placement="bottom" data-content="Lock Sidebar"><i class="fas fa-lock"></i></button>
-			<button id='btn_alpha_left' class="btn btn-secondary" type="button" 
+			<button id='btn_alpha_left' class="btn btn-secondary" type="button"
 				data-toggle="popover" data-placement="bottom" data-content="Fade Sidebar"><i class="fas fa-circle"></i></button>
 		</div>
 
@@ -78,12 +84,12 @@
 								<i class="fas fa-splotch"></i>
 							</label>
 						</div>
-	
+
 						<!-- Selector Options -->
 						<button id='btn_select_empty' type="button" class="btn btn-secondary" data-toggle="popover" data-placement="bottom" data-content="Empty Select">
 							<i class="fas fa-object-ungroup"></i>
 						</button>
-	
+
 						<!-- Undo Redo -->
 						<div class="btn-group" role="group" aria-label="Basic example">
 							<button id='btn_undo' type="button" class="btn btn-secondary" data-toggle="popover" data-placement="bottom" data-content="Undo">
@@ -93,7 +99,7 @@
 								<i class="fas fa-redo"></i>
 							</button>
 						</div>
-	
+
 						<!-- Copy Cut Paste delete -->
 						<div class="btn-group" role="group" aria-label="Basic example">
 							<button id='btn_copy'type="button" class="btn btn-secondary" data-toggle="popover" data-placement="bottom" data-content="Copy">
@@ -111,7 +117,7 @@
 						</div>
 
 					</div>
-					
+
 
 				</div>
 			</div>
@@ -196,13 +202,13 @@
 						</div>
 
 					</div>
-					
+
 
 
 				</div>
 			</div>
 		</div>
-		
+
 
 	</div>
 
@@ -215,7 +221,7 @@
 		</div>
 
 		<div id='section_3' class='sectional'>
-			
+
 			<ul id='section_3_tabs' class="nav nav-tabs" role="tablist">
 				<li class="nav-item">
 					<div class="nav-link active" id="layers_tab" data-toggle="tab" href="#layers_content" role="tab" aria-controls="home" aria-selected="true">Properties</div>
@@ -268,7 +274,7 @@
 							</div>
 						</div>
 					</form>
-					
+
 				</div>
 			</div>
 
@@ -292,7 +298,7 @@
 							<button id='btn_layer_delete' type="button" class="btn btn-secondary d-none">
 								Delete Layer
 							</button>
-							<button id='btn_layer_visible' type="button" class="btn btn-secondary" 
+							<button id='btn_layer_visible' type="button" class="btn btn-secondary"
 								data-toggle="popover" data-placement="bottom" data-content="Layer Visibility">
 								<i class="far fa-eye"></i>
 							</button>
@@ -301,14 +307,14 @@
 								<i class="fas fa-adjust"></i>
 							</button>
 						</div>
-	
+
 						<ul id='ul_layers' class='list-group list-group-flush shadow'>
-	
+
 						</ul>
 
 					</div>
-					
-	
+
+
 				</div>
 			</div>
 
@@ -316,4 +322,3 @@
 	</div>
 </body>
 </html>
-
